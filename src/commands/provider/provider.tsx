@@ -339,7 +339,7 @@ export function buildProfileSaveMessage(
   }
 
   lines.push(`Profile: ${filePath}`)
-  lines.push('Restart Claudex to use it.')
+  lines.push('Restart Cluadex to use it.')
 
   return lines.join('\n')
 }

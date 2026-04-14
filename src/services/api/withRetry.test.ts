@@ -1,4 +1,4 @@
-import { describe, expect, test, afterEach } from 'bun:test'
+import { describe, expect, test, afterEach, beforeAll } from 'bun:test'
 import { getRateLimitResetDelayMs, parseOpenAIDuration } from './withRetry.js'
 import { APIError } from '@anthropic-ai/sdk'
 
@@ -63,6 +63,16 @@ describe('parseOpenAIDuration', () => {
 
 // --- getRateLimitResetDelayMs ---
 describe('getRateLimitResetDelayMs - Anthropic (firstParty)', () => {
+  beforeAll(() => {
+    process.env.CLAUDE_CODE_USE_OPENAI = ''
+    process.env.CLAUDE_CODE_USE_GEMINI = ''
+    process.env.CLAUDE_CODE_USE_GITHUB = ''
+    process.env.CLAUDE_CODE_USE_BEDROCK = ''
+    process.env.CLAUDE_CODE_USE_VERTEX = ''
+    process.env.CLAUDE_CODE_USE_FOUNDRY = ''
+    process.env.CLAUDE_CODE_USE_NVIDIA = ''
+  })
+
   test('reads anthropic-ratelimit-unified-reset Unix timestamp', () => {
     const futureUnixSec = Math.floor(Date.now() / 1000) + 60
     const error = makeError({

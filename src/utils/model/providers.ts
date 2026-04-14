@@ -36,8 +36,8 @@ export function getAPIProvider(): APIProvider {
   if (isEnvTruthy(process.env.CLAUDE_CODE_USE_FOUNDRY)) {
     return 'foundry'
   }
-  // Default: nvidia (change to 'firstParty' for Anthropic, 'openai', etc.)
-  return 'nvidia'
+  // Default: firstParty (if no 3rd-party provider env vars set)
+  return 'firstParty'
 }
 
 export function usesAnthropicAccountFlow(): boolean {
