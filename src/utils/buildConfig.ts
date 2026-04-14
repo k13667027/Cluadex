@@ -1,13 +1,13 @@
 /**
- * Claudex build-time constants.
+ * Cluadex build-time constants.
  *
  * These replace process.env checks that were only meaningful in Anthropic's
- * internal build. In Claudex all such gates are permanently disabled so
+ * internal build. In Cluadex all such gates are permanently disabled so
  * external users cannot activate internal code paths by setting env vars.
  */
 
 /**
- * Always false in Claudex.
+ * Always false in Cluadex.
  * Replaces all `process.env.USER_TYPE === 'ant'` checks so that no external
  * user can activate Anthropic-internal features (commit attribution hooks,
  * system-prompt section clearing, dangerously-skip-permissions bypass, etc.)

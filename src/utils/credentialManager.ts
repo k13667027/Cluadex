@@ -1,5 +1,5 @@
 /**
- * Unified Credential Manager for Claudex
+ * Unified Credential Manager for Cluadex
  * 
  * Provides a consistent interface for storing and retrieving API credentials
  * across all providers. Credentials are stored in:

@@ -31,7 +31,7 @@ import { getInitialSettings } from 'src/utils/settings/settings.js'
 export async function update() {
   // Block updates for third-party providers. The update mechanism downloads
   // from Anthropic's distribution bucket, which would silently replace the
-  // Claudex build (with the OpenAI shim) with the upstream Claude Code
+  // Cluadex build (with the OpenAI shim) with the upstream Claude Code
   // binary (without it).
   if (getAPIProvider() !== 'firstParty') {
     writeToStdout(

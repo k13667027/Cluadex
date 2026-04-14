@@ -1,7 +1,7 @@
 import { isBareMode, isEnvTruthy } from './envUtils.js'
 import { getSecureStorage } from './secureStorage/index.js'
 
-/** JSON key in the shared Claudex secure storage blob. */
+/** JSON key in the shared Cluadex secure storage blob. */
 export const GITHUB_MODELS_STORAGE_KEY = 'githubModels' as const
 
 export type GithubModelsCredentialBlob = {

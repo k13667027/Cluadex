@@ -113,7 +113,7 @@ function printHumanSummary(payload: {
   }
 
   if (payload.applied) {
-    console.log('\nSaved .claudex-profile.json with the recommended profile.')
+    console.log('\nSaved .cluadex-profile.json with the recommended profile.')
     console.log('Next: bun run dev:profile')
   } else {
     console.log(

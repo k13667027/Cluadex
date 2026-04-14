@@ -31,7 +31,7 @@ function profile(profile: ProfileFile['profile'], env: ProfileFile['env']): Prof
   }
 }
 
-const missingCodexAuthPath = join(tmpdir(), 'claudex-missing-codex-auth.json')
+const missingCodexAuthPath = join(tmpdir(), 'cluadex-missing-codex-auth.json')
 
 test('matching persisted ollama env is reused for ollama launch', async () => {
   const env = await buildLaunchEnv({
@@ -276,7 +276,7 @@ test('codex launch ignores placeholder codex env keys', async () => {
 })
 
 test('codex launch prefers auth account id over stale persisted value', async () => {
-  const codexHome = mkdtempSync(join(tmpdir(), 'claudex-codex-'))
+  const codexHome = mkdtempSync(join(tmpdir(), 'cluadex-codex-'))
   try {
     writeFileSync(
       join(codexHome, 'auth.json'),
@@ -369,7 +369,7 @@ test('gemini profiles require a key', () => {
 })
 
 test('saveProfileFile writes a profile that loadProfileFile can read back', () => {
-  const cwd = mkdtempSync(join(tmpdir(), 'claudex-profile-file-'))
+  const cwd = mkdtempSync(join(tmpdir(), 'cluadex-profile-file-'))
 
   try {
     const persisted = createProfileFile('openai', {

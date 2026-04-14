@@ -1,17 +1,17 @@
 /**
- * Claudex Telegram Gateway
+ * Cluadex Telegram Gateway
  *
- * Bridges Telegram messages to the Claudex CLI using headless (--print) mode.
- * Each user gets an isolated Claudex session, kept alive between messages
+ * Bridges Telegram messages to the Cluadex CLI using headless (--print) mode.
+ * Each user gets an isolated Cluadex session, kept alive between messages
  * and killed after idle timeout.
  *
  * Config is managed via the CLI:
- *   claudex telegram setup          — interactive setup wizard
- *   claudex telegram start          — start the gateway
- *   claudex telegram permit <id>    — allow a Telegram user ID
- *   claudex telegram revoke <id>    — remove a Telegram user ID
- *   claudex telegram status         — show config and active sessions
- *   claudex telegram stop           — stop the running gateway
+ *   cluadex telegram setup          — interactive setup wizard
+ *   cluadex telegram start          — start the gateway
+ *   cluadex telegram permit <id>    — allow a Telegram user ID
+ *   cluadex telegram revoke <id>    — remove a Telegram user ID
+ *   cluadex telegram status         — show config and active sessions
+ *   cluadex telegram stop           — stop the running gateway
  *
  * Or run directly:
  *   bun run telegram-gateway/bot.ts
@@ -28,7 +28,7 @@ const cfg: TelegramConfig | null = loadConfig()
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN ?? cfg?.botToken
 if (!BOT_TOKEN) {
   console.error('    No bot token found.')
-  console.error('    Run: claudex telegram setup')
+  console.error('    Run: cluadex telegram setup')
   console.error('    Or:  export TELEGRAM_BOT_TOKEN=your-token')
   process.exit(1)
 }
@@ -231,7 +231,7 @@ async function handleMessage(msg: TelegramMessage): Promise<void> {
   if (!isAllowed(userId)) {
     await send(chatId,
       `⛔ Access denied.\n\nYour Telegram ID is \`${userId}\`.\n\n` +
-      `Ask the admin to run:\n\`claudex telegram permit ${userId}\``,
+      `Ask the admin to run:\n\`cluadex telegram permit ${userId}\``,
     )
     return
   }
@@ -348,7 +348,7 @@ async function main(): Promise<void> {
   console.log(`   Provider: ${PROVIDER || 'from env'}`)
   console.log(`   Sessions: max ${MAX_SESSIONS}, idle ${Math.round(IDLE_TIMEOUT_MS / 60000)}min`)
   console.log(`   Access:   ${ALLOWED_IDS.size > 0 ? `${ALLOWED_IDS.size} user(s) whitelisted` : 'open (no whitelist)'}`)
-  console.log(`   Config:   ${loadConfig() ? '~/.claudex/telegram.json' : 'env vars only'}`)
+  console.log(`   Config:   ${loadConfig() ? '~/.cluadex/telegram.json' : 'env vars only'}`)
 
   process.on('SIGINT', () => {
     console.log('\nShutting down…')

@@ -7,7 +7,7 @@ import type { LocalJSXCommandCall, LocalJSXCommandOnDone } from '../../types/com
 
 // ── Config helpers (inline to avoid cross-package import issues) ──────────────
 
-const CONFIG_PATH = join(homedir(), '.claudex', 'telegram.json')
+const CONFIG_PATH = join(homedir(), '.cluadex', 'telegram.json')
 
 interface TelegramConfig {
   botToken: string
@@ -29,7 +29,7 @@ function loadCfg(): TelegramConfig | null {
 
 function saveCfg(cfg: TelegramConfig): void {
   const { mkdirSync, writeFileSync } = require('node:fs') as typeof import('node:fs')
-  const dir = join(homedir(), '.claudex')
+  const dir = join(homedir(), '.cluadex')
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
   writeFileSync(CONFIG_PATH, JSON.stringify(cfg, null, 2), { encoding: 'utf8', mode: 0o600 })
 }
@@ -56,11 +56,11 @@ export function TelegramCommand({ call, onDone }: Props): React.ReactNode {
       case 'setup': {
         lines.push('📋 Telegram Gateway Setup')
         lines.push('')
-        lines.push('To configure the gateway, set these values in ~/.claudex/telegram.json')
+        lines.push('To configure the gateway, set these values in ~/.cluadex/telegram.json')
         lines.push('or run the setup interactively:')
         lines.push('')
         lines.push('  1. Get a bot token from @BotFather on Telegram')
-        lines.push('  2. Run: claudex telegram setup --token <your-token> --provider nvidia')
+        lines.push('  2. Run: cluadex telegram setup --token <your-token> --provider nvidia')
         lines.push('')
 
         const token = call.userArgs?.find(a => a.startsWith('--token='))?.split('=')[1]
@@ -85,8 +85,8 @@ export function TelegramCommand({ call, onDone }: Props): React.ReactNode {
           lines.push(`   Token:    ${token.slice(0, 8)}…`)
           lines.push('')
           lines.push('Next steps:')
-          lines.push('  claudex telegram permit <your-telegram-id>  — whitelist yourself')
-          lines.push('  claudex telegram start                       — start the gateway')
+          lines.push('  cluadex telegram permit <your-telegram-id>  — whitelist yourself')
+          lines.push('  cluadex telegram start                       — start the gateway')
           lines.push('')
           lines.push('Find your Telegram ID by messaging @userinfobot')
         } else {
@@ -177,7 +177,7 @@ export function TelegramCommand({ call, onDone }: Props): React.ReactNode {
           '  bun run telegram',
           '',
           'Or as a background service:',
-          '  pm2 start telegram-gateway/bot.ts --interpreter bun --name claudex-telegram',
+          '  pm2 start telegram-gateway/bot.ts --interpreter bun --name cluadex-telegram',
           '',
           'The gateway runs as a separate process and cannot be started from inside the CLI.',
         ])

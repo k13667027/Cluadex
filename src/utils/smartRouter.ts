@@ -1,5 +1,5 @@
 /**
- * SmartRouter — intelligent auto-router for Claudex.
+ * SmartRouter — intelligent auto-router for Cluadex.
  *
  * Instead of always using one fixed provider, the smart router:
  * - Pings all configured providers on startup

@@ -1,5 +1,5 @@
 /**
- * NVIDIA AI provider for Claudex.
+ * NVIDIA AI provider for Cluadex.
  *
  * Routes requests to NVIDIA's OpenAI-compatible inference API at
  * https://integrate.api.nvidia.com/v1

@@ -167,7 +167,7 @@ function resolveTheme(): Theme {
   return THEMES[name] ?? THEMES.sunset
 }
 
-// ─── Claudex ASCII Banner ─────────────────────────────────────────────────────
+// ─── Cluadex ASCII Banner ─────────────────────────────────────────────────────
 
 const BANNER = [
   ` \u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2557      \u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2557   \u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2557  \u2588\u2588\u2557`,
@@ -318,7 +318,7 @@ export function printStartupScreen(): void {
 
   // ── Footer: version ──
   out.push(
-    `  ${DIM}${rgb(...theme.dim)}Claudex ${RESET}` +
+    `  ${DIM}${rgb(...theme.dim)}Cluadex ${RESET}` +
     `${rgb(...theme.accent)}v${MACRO.DISPLAY_VERSION ?? MACRO.VERSION}${RESET}`,
   )
   out.push('')

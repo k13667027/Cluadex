@@ -4,7 +4,7 @@ import { shouldInferenceConfigCommandBeImmediate } from '../../utils/immediateCo
 export default {
   type: 'local-jsx',
   name: 'provider',
-  description: 'Set up and save a third-party provider profile for Claudex',
+  description: 'Set up and save a third-party provider profile for Cluadex',
   get immediate() {
     return shouldInferenceConfigCommandBeImmediate()
   },

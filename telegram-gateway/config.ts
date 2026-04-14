@@ -1,8 +1,8 @@
 /**
- * Claudex Telegram Gateway — config manager
+ * Cluadex Telegram Gateway — config manager
  *
- * Config is stored at ~/.claudex/telegram.json
- * Managed via: claudex telegram <command>
+ * Config is stored at ~/.cluadex/telegram.json
+ * Managed via: cluadex telegram <command>
  */
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -19,7 +19,7 @@ export interface TelegramConfig {
   updatedAt: string
 }
 
-const CONFIG_DIR = join(homedir(), '.claudex')
+const CONFIG_DIR = join(homedir(), '.cluadex')
 const CONFIG_PATH = join(CONFIG_DIR, 'telegram.json')
 
 export function configExists(): boolean {
@@ -42,7 +42,7 @@ export function saveConfig(config: TelegramConfig): void {
 
 export function permitUser(userId: number): { added: boolean; config: TelegramConfig } {
   const config = loadConfig()
-  if (!config) throw new Error('No Telegram config found. Run: claudex telegram setup')
+  if (!config) throw new Error('No Telegram config found. Run: cluadex telegram setup')
   if (config.allowedIds.includes(userId)) return { added: false, config }
   config.allowedIds.push(userId)
   config.updatedAt = new Date().toISOString()
@@ -52,7 +52,7 @@ export function permitUser(userId: number): { added: boolean; config: TelegramCo
 
 export function revokeUser(userId: number): { removed: boolean; config: TelegramConfig } {
   const config = loadConfig()
-  if (!config) throw new Error('No Telegram config found. Run: claudex telegram setup')
+  if (!config) throw new Error('No Telegram config found. Run: cluadex telegram setup')
   const before = config.allowedIds.length
   config.allowedIds = config.allowedIds.filter(id => id !== userId)
   const removed = config.allowedIds.length < before

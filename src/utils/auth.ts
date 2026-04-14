@@ -98,14 +98,14 @@ function isManagedOAuthContext(): boolean {
 }
 
 /**
- * Returns true if a Claudex provider profile is saved on disk.
+ * Returns true if a Cluadex provider profile is saved on disk.
  * Used to skip the Anthropic login screen on first run when the user
- * has already configured a 3rd-party provider via `claudex /provider`
+ * has already configured a 3rd-party provider via `cluadex /provider`
  * or `bun run profile:init`.
  */
-function hasClaudexProfile(): boolean {
+function hasCluadexProfile(): boolean {
   try {
-    const profilePath = resolve(process.cwd(), '.claudex-profile.json')
+    const profilePath = resolve(process.cwd(), '.cluadex-profile.json')
     return existsSync(profilePath)
   } catch {
     return false
@@ -140,7 +140,7 @@ export function isAnthropicAuthEnabled(): boolean {
     // If a Claudex provider profile is saved on disk, treat it as 3P so the
     // Anthropic login screen is skipped. The profile will be loaded and applied
     // to process.env by applyProfileEnvToProcessEnv in cli.tsx before this runs.
-    hasClaudexProfile()
+    hasCluadexProfile()
 
   // Check if user has configured an external API key source
   // This allows externally-provided API keys to work (without requiring proxy configuration)

@@ -139,7 +139,7 @@ let _customThemeMetaCache: CustomThemeDefinition[] | null = null
 function loadThemesJson(): ThemesJson {
   const candidates = [
     join(process.cwd(), 'themes.json'),
-    join(process.env.HOME ?? process.env.USERPROFILE ?? '', '.claudex', 'themes.json'),
+    join(process.env.HOME ?? process.env.USERPROFILE ?? '', '.cluadex', 'themes.json'),
   ]
   for (const p of candidates) {
     try {

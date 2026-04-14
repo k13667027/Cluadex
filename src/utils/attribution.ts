@@ -74,9 +74,9 @@ export function getAttributionTexts(): AttributionTexts {
       ? getPublicModelName(model)
       : 'Claude Opus 4.6'
   const defaultAttribution =
-    '🤖 Generated with [Claudex](https://github.com/l3tchupkt/Claudex)'
+    '🤖 Generated with [Cluadex](https://github.com/k13667027/Cluadex)'
   const defaultCommit = isEnvTruthy(
-    process.env.Claudex_DISABLE_CO_AUTHORED_BY,
+    process.env.Cluadex_DISABLE_CO_AUTHORED_BY,
   )
     ? ''
     : `Co-Authored-By: ${modelName} <noreply@anthropic.com>`
@@ -328,7 +328,7 @@ export async function getEnhancedPRAttribution(
   }
 
   const defaultAttribution =
-    '🤖 Generated with [Claudex](https://github.com/l3tchupkt/Claudex)'
+    '🤖 Generated with [Cluadex](https://github.com/k13667027/Cluadex)'
 
   // Get AppState first
   const appState = getAppState()
@@ -374,7 +374,7 @@ export async function getEnhancedPRAttribution(
     memoryAccessCount > 0
       ? `, ${memoryAccessCount} ${memoryAccessCount === 1 ? 'memory' : 'memories'} recalled`
       : ''
-  const summary = `🤖 Generated with [Claudex](https://github.com/l3tchupkt/Claudex) (${claudePercent}% ${promptCount}-shotted by ${shortModelName}${memSuffix})`
+  const summary = `🤖 Generated with [Cluadex](https://github.com/k13667027/Cluadex) (${claudePercent}% ${promptCount}-shotted by ${shortModelName}${memSuffix})`
 
   // Append trailer lines for squash-merge survival. Only for allowlisted repos
   // (INTERNAL_MODEL_REPOS) and only in builds with COMMIT_ATTRIBUTION enabled —

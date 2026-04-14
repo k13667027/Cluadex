@@ -212,7 +212,7 @@ function buildCodexWebSearchInput(input: Input): Array<Record<string, unknown>> 
 
 function buildCodexWebSearchInstructions(): string {
   return [
-    'You are the Claudex web search tool.',
+    'You are the Cluadex web search tool.',
     'Search the web for the user query and return a concise factual answer.',
     'Include source URLs in the response.',
   ].join(' ')
@@ -336,7 +336,7 @@ async function runCodexWebSearch(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${credentials.apiKey}`,
       'chatgpt-account-id': credentials.accountId,
-      originator: 'Claudex',
+      originator: 'Cluadex',
     },
     body: JSON.stringify(body),
     signal,
