@@ -1,0 +1,100 @@
+{
+  "name": "claudex-vscode",
+  "displayName": "Claudex",
+  "description": "Sleek VS Code extension for Claudex with a visual Control Center and terminal-aligned theme.",
+  "version": "0.1.1",
+  "publisher": "letchu_pkt",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Themes",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "claudex.start",
+        "title": "Claudex: Launch in Terminal",
+        "category": "Claudex"
+      },
+      {
+        "command": "claudex.openDocs",
+        "title": "Claudex: Open Repository",
+        "category": "Claudex"
+      },
+      {
+        "command": "claudex.openControlCenter",
+        "title": "Claudex: Open Control Center",
+        "category": "Claudex"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "claudex",
+          "title": "Claudex",
+          "icon": "media/claudex.svg"
+        }
+      ]
+    },
+    "views": {
+      "claudex": [
+        {
+          "id": "claudex.controlCenter",
+          "name": "Control Center",
+          "type": "webview"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Claudex",
+      "properties": {
+        "claudex.launchCommand": {
+          "type": "string",
+          "default": "claudex",
+          "description": "Command run in the integrated terminal when launching Claudex."
+        },
+        "claudex.terminalName": {
+          "type": "string",
+          "default": "Claudex",
+          "description": "Integrated terminal tab name for Claudex sessions."
+        },
+        "claudex.useOpenAIShim": {
+          "type": "boolean",
+          "default": false,
+          "description": "Optionally set CLAUDE_CODE_USE_OPENAI=1 in launched Claudex terminals."
+        }
+      }
+    },
+    "themes": [
+      {
+        "label": "Claudex Terminal Black",
+        "uiTheme": "vs-dark",
+        "path": "./themes/Claudex-Terminal-Black.json"
+      }
+    ]
+  },
+  "scripts": {
+    "lint": "node --check ./src/extension.js",
+    "package": "npx @vscode/vsce package --no-dependencies",
+    "publish": "npx @vscode/vsce publish --no-dependencies"
+  },
+  "keywords": [
+    "claudex",
+    "terminal",
+    "theme",
+    "cli",
+    "llm"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/l3tchupkt/claudex"
+  },
+  "author": "Lakshmikanthan K (letchu_pkt)",
+  "license": "MIT"
+}

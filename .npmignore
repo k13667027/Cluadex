@@ -1,0 +1,87 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output (keep dist for publishing)
+build/
+*.mjs.map
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+*.env
+
+# Profile / credentials / personal
+.claudex-profile.json
+.claude/
+~/.claude/
+.claude-code/
+*.pem
+*.key
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+bun-error.log*
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V2
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/settings.json
+.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+
+# TypeScript
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# Test / coverage
+coverage/
+.nyc_output/
+reports/
+
+# Temp
+tmp/
+temp/
+.tmp/
+*.tmp
+
+# Bun
+bun.lockb
+
+# Docker
+.dockerignore
+
+# Development scripts (not needed in package)
+scripts/
+.eslintrc*
+.prettierrc*
+.vscode-test/
+
+# Docs (optional - remove if you want docs in package)
+docs/
+ANDROID_INSTALL.md
+
+# GitHub workflows (not needed in package)
+.github/
+
+# Source maps
+*.map

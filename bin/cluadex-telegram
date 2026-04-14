@@ -1,0 +1,188 @@
+#!/usr/bin/env node
+/**
+ * claudex telegram — manage the Claudex Telegram gateway
+ *
+ * Usage:
+ *   claudex telegram setup --token <token> --provider <provider>
+ *   claudex telegram permit <user-id>
+ *   claudex telegram revoke <user-id>
+ *   claudex telegram status
+ *   claudex telegram start
+ */
+
+import { existsSync } from 'node:fs'
+import { homedir } from 'node:os'
+import { join, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { spawn } from 'node:child_process'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const CONFIG_DIR  = join(homedir(), '.claudex')
+const CONFIG_PATH = join(CONFIG_DIR, 'telegram.json')
+
+function loadCfg() {
+  if (!existsSync(CONFIG_PATH)) return null
+  try { return JSON.parse(readFileSync(CONFIG_PATH, 'utf8')) } catch { return null }
+}
+
+function saveCfg(cfg) {
+  if (!existsSync(CONFIG_DIR)) mkdirSync(CONFIG_DIR, { recursive: true })
+  writeFileSync(CONFIG_PATH, JSON.stringify(cfg, null, 2), { encoding: 'utf8', mode: 0o600 })
+}
+
+function parseArg(name) {
+  const args = process.argv.slice(3)
+  const eqForm = args.find(a => a.startsWith(`${name}=`))
+  if (eqForm) return eqForm.split('=').slice(1).join('=')
+  const idx = args.indexOf(name)
+  if (idx !== -1 && args[idx + 1] && !args[idx + 1].startsWith('--')) return args[idx + 1]
+  return null
+}
+
+const sub = process.argv[2]
+
+switch (sub) {
+  case 'setup': {
+    const token    = parseArg('--token')
+    const provider = parseArg('--provider') ?? 'openai'
+    const timeout  = parseInt(parseArg('--timeout') ?? '300000', 10)
+    const maxSess  = parseInt(parseArg('--max-sessions') ?? '10', 10)
+
+    if (!token) {
+      console.error('Usage: claudex telegram setup --token <bot-token> --provider <openai|nvidia|gemini|ollama>')
+      console.error('')
+      console.error('Get a bot token from @BotFather on Telegram.')
+      process.exit(1)
+    }
+
+    const cfg = {
+      botToken: token,
+      allowedIds: loadCfg()?.allowedIds ?? [],
+      provider,
+      idleTimeoutMs: timeout,
+      maxSessions: maxSess,
+      createdAt: loadCfg()?.createdAt ?? new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    }
+    saveCfg(cfg)
+    console.log(`✅ Config saved: ${CONFIG_PATH}`)
+    console.log(`   Provider:  ${provider}`)
+    console.log(`   Token:     ${token.slice(0, 8)}…`)
+    console.log(`   Timeout:   ${Math.round(timeout / 60000)} min`)
+    console.log(`   Sessions:  max ${maxSess}`)
+    console.log('')
+    console.log('Next steps:')
+    console.log('  claudex telegram permit <your-telegram-id>')
+    console.log('  claudex telegram start')
+    console.log('')
+    console.log('Find your Telegram ID by messaging @userinfobot')
+    break
+  }
+
+  case 'permit': {
+    const idStr = process.argv[3]
+    const id = parseInt(idStr, 10)
+    if (!idStr || isNaN(id)) {
+      console.error('Usage: claudex telegram permit <telegram-user-id>')
+      console.error('')
+      console.error('Find your ID by messaging @userinfobot on Telegram.')
+      process.exit(1)
+    }
+    const cfg = loadCfg()
+    if (!cfg) {
+      console.error('❌ No config found. Run: claudex telegram setup --token <token>')
+      process.exit(1)
+    }
+    if (cfg.allowedIds.includes(id)) {
+      console.log(`ℹ️  User ${id} is already permitted.`)
+    } else {
+      cfg.allowedIds.push(id)
+      cfg.updatedAt = new Date().toISOString()
+      saveCfg(cfg)
+      console.log(`✅ Permitted user ${id}`)
+      console.log(`   Total allowed: ${cfg.allowedIds.length}`)
+    }
+    break
+  }
+
+  case 'revoke': {
+    const idStr = process.argv[3]
+    const id = parseInt(idStr, 10)
+    if (!idStr || isNaN(id)) {
+      console.error('Usage: claudex telegram revoke <telegram-user-id>')
+      process.exit(1)
+    }
+    const cfg = loadCfg()
+    if (!cfg) { console.error('❌ No config found.'); process.exit(1) }
+    const before = cfg.allowedIds.length
+    cfg.allowedIds = cfg.allowedIds.filter(x => x !== id)
+    if (cfg.allowedIds.length < before) {
+      cfg.updatedAt = new Date().toISOString()
+      saveCfg(cfg)
+      console.log(`✅ Revoked user ${id}`)
+    } else {
+      console.log(`ℹ️  User ${id} was not in the allowed list.`)
+    }
+    break
+  }
+
+  case 'status': {
+    const cfg = loadCfg()
+    if (!cfg) {
+      console.log('❌ No Telegram gateway configured.')
+      console.log('')
+      console.log('Run: claudex telegram setup --token <token> --provider <provider>')
+    } else {
+      console.log('📡 Telegram Gateway Config')
+      console.log(`   Config:    ${CONFIG_PATH}`)
+      console.log(`   Token:     ${cfg.botToken.slice(0, 8)}…`)
+      console.log(`   Provider:  ${cfg.provider}`)
+      console.log(`   Allowed:   ${cfg.allowedIds.length === 0 ? 'open (no whitelist)' : cfg.allowedIds.join(', ')}`)
+      console.log(`   Timeout:   ${Math.round(cfg.idleTimeoutMs / 60000)} min`)
+      console.log(`   Sessions:  max ${cfg.maxSessions}`)
+      console.log(`   Updated:   ${cfg.updatedAt}`)
+    }
+    break
+  }
+
+  case 'start': {
+    const cfg = loadCfg()
+    if (!cfg) {
+      console.error('❌ No config found. Run: claudex telegram setup --token <token>')
+      process.exit(1)
+    }
+    console.log('🚀 Starting Claudex Telegram Gateway…')
+    console.log(`   Provider: ${cfg.provider}`)
+    console.log(`   Allowed:  ${cfg.allowedIds.length === 0 ? 'open' : cfg.allowedIds.join(', ')}`)
+    console.log('')
+
+    const botPath = join(__dirname, '..', 'telegram-gateway', 'bot.ts')
+    const child = spawn('bun', ['run', botPath], {
+      stdio: 'inherit',
+      env: { ...process.env, TELEGRAM_BOT_TOKEN: cfg.botToken },
+    })
+    child.on('exit', code => process.exit(code ?? 0))
+    break
+  }
+
+  default: {
+    console.log('claudex telegram — Telegram gateway management')
+    console.log('')
+    console.log('Commands:')
+    console.log('  claudex telegram setup --token <token> --provider <provider>')
+    console.log('                              configure the gateway')
+    console.log('  claudex telegram permit <id>  allow a Telegram user ID')
+    console.log('  claudex telegram revoke <id>  remove a Telegram user ID')
+    console.log('  claudex telegram status       show current config')
+    console.log('  claudex telegram start        start the gateway')
+    console.log('')
+    console.log('Providers: openai, nvidia, gemini, ollama, codex')
+    console.log('')
+    console.log('Example:')
+    console.log('  claudex telegram setup --token 123456:ABC --provider nvidia')
+    console.log('  claudex telegram permit 987654321')
+    console.log('  claudex telegram start')
+    break
+  }
+}
