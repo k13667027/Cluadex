@@ -1,6 +1,6 @@
 {
   "name": "@john2026/cluadex",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "publisher": "john2026",
   "description": "Claude Code opened to any LLM — OpenAI, Gemini, DeepSeek, Ollama, and 200+ models",
   "type": "module",
@@ -131,7 +131,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/l3tchupkt/claudex"
+    "url": "https://github.com/k13667027/Cluadex.git"
   },
   "author": "karen john",
   "keywords": [
