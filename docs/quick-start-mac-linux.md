@@ -1,4 +1,4 @@
-# Claudex Quick Start — macOS / Linux
+# Cluadex Quick Start — macOS / Linux
 
 Uses bash or zsh (Terminal, iTerm2, or any standard shell).
 
@@ -25,19 +25,19 @@ npm --version
 
 ---
 
-## 2. Install Claudex
+## 2. Install Cluadex
 
 ```bash
-npm install -g @letchu_pkt/claudex
+npm install -g @john2026/cluadex
 ```
 
 Verify:
 
 ```bash
-claudex --version
+cluadex --version
 ```
 
-If `claudex` is not found, close the terminal and open a new one.
+If `cluadex` is not found, close the terminal and open a new one.
 
 ---
 
@@ -49,7 +49,7 @@ If `claudex` is not found, close the terminal and open a new one.
 export CLAUDE_CODE_USE_NVIDIA=1
 export NVIDIA_API_KEY=nvapi-your-key-here
 export NVIDIA_MODEL=moonshotai/kimi-k2-instruct
-claudex
+cluadex
 ```
 
 Get a free key at [build.nvidia.com](https://build.nvidia.com/).
@@ -64,7 +64,7 @@ Other NVIDIA models: `meta/llama-3.3-70b-instruct`, `deepseek-ai/deepseek-r1`, `
 export CLAUDE_CODE_USE_GEMINI=1
 export GEMINI_API_KEY=your-key-here
 export GEMINI_MODEL=gemini-2.0-flash
-claudex
+cluadex
 ```
 
 Free key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey).
@@ -77,7 +77,7 @@ Free key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey).
 export CLAUDE_CODE_USE_OPENAI=1
 export OPENAI_API_KEY=sk-your-key-here
 export OPENAI_MODEL=gpt-4o
-claudex
+cluadex
 ```
 
 ---
@@ -89,7 +89,7 @@ export CLAUDE_CODE_USE_OPENAI=1
 export OPENAI_API_KEY=sk-your-key-here
 export OPENAI_BASE_URL=https://api.deepseek.com/v1
 export OPENAI_MODEL=deepseek-chat
-claudex
+cluadex
 ```
 
 ---
@@ -101,7 +101,7 @@ export CLAUDE_CODE_USE_OPENAI=1
 export OPENAI_API_KEY=gsk_your-key-here
 export OPENAI_BASE_URL=https://api.groq.com/openai/v1
 export OPENAI_MODEL=llama-3.3-70b-versatile
-claudex
+cluadex
 ```
 
 ---
@@ -116,7 +116,7 @@ ollama pull llama3.1:8b
 export CLAUDE_CODE_USE_OPENAI=1
 export OPENAI_BASE_URL=http://localhost:11434/v1
 export OPENAI_MODEL=llama3.1:8b
-claudex
+cluadex
 ```
 
 ---
@@ -129,7 +129,7 @@ Download from [atomic.chat](https://atomic.chat/), launch the app and load a mod
 export CLAUDE_CODE_USE_OPENAI=1
 export OPENAI_BASE_URL=http://127.0.0.1:1337/v1
 export OPENAI_MODEL=your-loaded-model-name
-claudex
+cluadex
 ```
 
 ---
@@ -157,7 +157,7 @@ Or use the profile launcher (see [Advanced Setup](advanced-setup.md)).
 
 ## 5. Troubleshooting
 
-### `claudex` not found
+### `cluadex` not found
 
 Close the terminal, open a new one, try again.
 
@@ -168,7 +168,7 @@ Set a provider flag before running:
 ```bash
 export CLAUDE_CODE_USE_NVIDIA=1
 export NVIDIA_API_KEY=nvapi-your-key
-claudex
+cluadex
 ```
 
 Or run `/provider` inside the CLI to configure interactively.
@@ -185,16 +185,16 @@ ollama serve
 
 ---
 
-## 6. Update Claudex
+## 6. Update Cluadex
 
 ```bash
-npm install -g @letchu_pkt/claudex@latest
+npm install -g @john2026/cluadex@latest
 ```
 
 ## 7. Uninstall
 
 ```bash
-npm uninstall -g @letchu_pkt/claudex
+npm uninstall -g @john2026/cluadex
 ```
 
 ---
@@ -202,5 +202,5 @@ npm uninstall -g @letchu_pkt/claudex
 ## Next Steps
 
 - Save a provider profile: [Advanced Setup](advanced-setup.md)
-- Use Claudex via Telegram: [Telegram Gateway](../telegram-gateway/README.md)
+- Use Cluadex via Telegram: [Telegram Gateway](../telegram-gateway/README.md)
 - Daily Ollama workflow: [Playbook](../PLAYBOOK.md)

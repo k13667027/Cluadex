@@ -1,4 +1,4 @@
-# Claudex Advanced Setup
+# Cluadex Advanced Setup
 
 Source builds, provider profiles, diagnostics, smart routing, Telegram gateway, and full provider reference.
 
@@ -9,7 +9,7 @@ Source builds, provider profiles, diagnostics, smart routing, Telegram gateway, 
 ### npm (recommended)
 
 ```bash
-npm install -g @letchu_pkt/claudex
+npm install -g @john2026/cluadex
 ```
 
 ### From source with Bun
@@ -17,8 +17,8 @@ npm install -g @letchu_pkt/claudex
 Requires Bun 1.3.11 or newer.
 
 ```bash
-git clone https://github.com/l3tchupkt/claudex.git
-cd claudex
+git clone https://github.com/k13667027/Cluadex.git
+cd cluadex
 bun install
 bun run build
 npm link
@@ -27,8 +27,8 @@ npm link
 ### Run directly with Bun (no install)
 
 ```bash
-git clone https://github.com/l3tchupkt/claudex.git
-cd claudex
+git clone https://github.com/k13667027/Cluadex.git
+cd cluadex
 bun install
 bun run dev
 ```
@@ -171,13 +171,13 @@ export OPENAI_MODEL=your-model-name
 
 `codexplan` = GPT-5.4 with high reasoning. `codexspark` = GPT-5.3 Codex Spark (faster).
 
-Claudex reads `~/.codex/auth.json` automatically if you already use the Codex CLI.
+Cluadex reads `~/.codex/auth.json` automatically if you already use the Codex CLI.
 
 ```bash
 export CLAUDE_CODE_USE_OPENAI=1
 export OPENAI_MODEL=codexplan
 export CODEX_API_KEY=...   # optional if auth.json exists
-claudex
+cluadex
 ```
 
 ### Amazon Bedrock
@@ -229,7 +229,7 @@ export ANTHROPIC_FOUNDRY_API_KEY=your-key
 | `CODEX_API_KEY` | Codex | Token override |
 | `CODEX_AUTH_JSON_PATH` | Codex | Path to auth.json |
 | `FIRECRAWL_API_KEY` | All | Enables WebSearch + JS-rendered WebFetch |
-| `CLAUDEX_THEME` | All | Startup theme: `sunset` `ocean` `aurora` `neon` `mono` |
+| `CLUADEX_THEME` | All | Startup theme: `sunset` `ocean` `aurora` `neon` `mono` |
 | `CLAUDEX_DISABLE_CO_AUTHORED_BY` | All | Suppress Co-Authored-By in git commits |
 | `CLAUDEX_ENABLE_EXTENDED_KEYS` | All | Enable Kitty keyboard protocol |
 | `ROUTER_MODE` | SmartRouter | Set to `smart` to enable multi-provider routing |
@@ -240,9 +240,9 @@ export ANTHROPIC_FOUNDRY_API_KEY=your-key
 
 ## Provider Launch Profiles
 
-Save a profile once, launch with one command. Profiles are stored in `.claudex-profile.json`.
+Save a profile once, launch with one command. Profiles are stored in `.cluadex-profile.json`.
 
-Once a profile is saved, Claudex skips the Anthropic login screen automatically on first run.
+Once a profile is saved, Cluadex skips the Anthropic login screen automatically on first run.
 
 ```bash
 # initialize a profile
@@ -282,8 +282,8 @@ You can also configure a profile from inside the CLI with `/provider`.
 ## Startup Themes
 
 ```bash
-export CLAUDEX_THEME=ocean   # sunset | ocean | aurora | neon | mono
-claudex
+export CLUADEX_THEME=ocean   # sunset | ocean | aurora | neon | mono
+cluadex
 ```
 
 ---
@@ -296,7 +296,7 @@ Route requests automatically to the best available provider:
 export ROUTER_MODE=smart
 export ROUTER_STRATEGY=balanced   # latency | cost | balanced
 export ROUTER_FALLBACK=true
-claudex
+cluadex
 ```
 
 The router benchmarks all configured providers on startup, tracks latency and error rates, and re-checks unhealthy providers after 60 seconds.
@@ -305,17 +305,17 @@ The router benchmarks all configured providers on startup, tracks latency and er
 
 ## Telegram Gateway
 
-Run Claudex as a Telegram bot. Each user gets an isolated session.
+Run Cluadex as a Telegram bot. Each user gets an isolated session.
 
 ```bash
 # one-time setup
-claudex telegram setup --token 123456:ABC --provider nvidia
+cluadex telegram setup --token 123456:ABC --provider nvidia
 
 # allow a user (find your ID via @userinfobot on Telegram)
-claudex telegram permit 987654321
+cluadex telegram permit 987654321
 
 # start the gateway
-claudex telegram start
+cluadex telegram start
 ```
 
 Or manage from inside the CLI:
@@ -326,7 +326,7 @@ Or manage from inside the CLI:
 /telegram status
 ```
 
-Config is stored at `~/.claudex/telegram.json`. Full guide: [telegram-gateway/README.md](../telegram-gateway/README.md)
+Config is stored at `~/.cluadex/telegram.json`. Full guide: [telegram-gateway/README.md](../telegram-gateway/README.md)
 
 ---
 

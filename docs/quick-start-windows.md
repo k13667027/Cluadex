@@ -1,4 +1,4 @@
-# Claudex Quick Start — Windows
+# Cluadex Quick Start — Windows
 
 Uses Windows PowerShell.
 
@@ -17,19 +17,19 @@ npm --version
 
 ---
 
-## 2. Install Claudex
+## 2. Install Cluadex
 
 ```powershell
-npm install -g @letchu_pkt/claudex
+npm install -g @john2026/cluadex
 ```
 
 Verify:
 
 ```powershell
-claudex --version
+cluadex --version
 ```
 
-If `claudex` is not found, close PowerShell and open a new window.
+If `cluadex` is not found, close PowerShell and open a new window.
 
 ---
 
@@ -41,7 +41,7 @@ If `claudex` is not found, close PowerShell and open a new window.
 $env:CLAUDE_CODE_USE_NVIDIA="1"
 $env:NVIDIA_API_KEY="nvapi-your-key-here"
 $env:NVIDIA_MODEL="moonshotai/kimi-k2-instruct"
-claudex
+cluadex
 ```
 
 Get a free key at [build.nvidia.com](https://build.nvidia.com/).
@@ -56,7 +56,7 @@ Other NVIDIA models: `meta/llama-3.3-70b-instruct`, `deepseek-ai/deepseek-r1`, `
 $env:CLAUDE_CODE_USE_GEMINI="1"
 $env:GEMINI_API_KEY="your-key-here"
 $env:GEMINI_MODEL="gemini-2.0-flash"
-claudex
+cluadex
 ```
 
 Get a free key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey).
@@ -69,7 +69,7 @@ Get a free key at [aistudio.google.com/apikey](https://aistudio.google.com/apike
 $env:CLAUDE_CODE_USE_OPENAI="1"
 $env:OPENAI_API_KEY="sk-your-key-here"
 $env:OPENAI_MODEL="gpt-4o"
-claudex
+cluadex
 ```
 
 ---
@@ -81,7 +81,7 @@ $env:CLAUDE_CODE_USE_OPENAI="1"
 $env:OPENAI_API_KEY="sk-your-key-here"
 $env:OPENAI_BASE_URL="https://api.deepseek.com/v1"
 $env:OPENAI_MODEL="deepseek-chat"
-claudex
+cluadex
 ```
 
 ---
@@ -93,7 +93,7 @@ $env:CLAUDE_CODE_USE_OPENAI="1"
 $env:OPENAI_API_KEY="gsk_your-key-here"
 $env:OPENAI_BASE_URL="https://api.groq.com/openai/v1"
 $env:OPENAI_MODEL="llama-3.3-70b-versatile"
-claudex
+cluadex
 ```
 
 ---
@@ -108,7 +108,7 @@ ollama pull llama3.1:8b
 $env:CLAUDE_CODE_USE_OPENAI="1"
 $env:OPENAI_BASE_URL="http://localhost:11434/v1"
 $env:OPENAI_MODEL="llama3.1:8b"
-claudex
+cluadex
 ```
 
 ---
@@ -135,7 +135,7 @@ Or use the profile launcher (see [Advanced Setup](advanced-setup.md)).
 
 ## 5. Troubleshooting
 
-### `claudex` not found
+### `cluadex` not found
 
 Close PowerShell, open a new window, try again.
 
@@ -146,7 +146,7 @@ Set a provider flag before running. Example:
 ```powershell
 $env:CLAUDE_CODE_USE_NVIDIA="1"
 $env:NVIDIA_API_KEY="nvapi-your-key"
-claudex
+cluadex
 ```
 
 Or run `/provider` inside the CLI to configure interactively.
@@ -165,16 +165,16 @@ ollama serve
 
 ---
 
-## 6. Update Claudex
+## 6. Update Cluadex
 
 ```powershell
-npm install -g @letchu_pkt/claudex@latest
+npm install -g @john2026/cluadex@latest
 ```
 
 ## 7. Uninstall
 
 ```powershell
-npm uninstall -g @letchu_pkt/claudex
+npm uninstall -g @john2026/cluadex
 ```
 
 ---
@@ -182,5 +182,5 @@ npm uninstall -g @letchu_pkt/claudex
 ## Next Steps
 
 - Save a provider profile: [Advanced Setup](advanced-setup.md)
-- Use Claudex via Telegram: [Telegram Gateway](../telegram-gateway/README.md)
+- Use Cluadex via Telegram: [Telegram Gateway](../telegram-gateway/README.md)
 - Daily Ollama workflow: [Playbook](../PLAYBOOK.md)

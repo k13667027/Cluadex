@@ -1,14 +1,14 @@
-# Claudex — Non-Technical Setup
+# Cluadex — Non-Technical Setup
 
 No source builds. No Bun. No config files to edit manually.
 
-If you can paste commands into a terminal, you can run Claudex.
+If you can paste commands into a terminal, you can run Cluadex.
 
 ---
 
-## What Claudex Does
+## What Cluadex Does
 
-Claudex is an AI coding assistant you run in your terminal. Give it tasks — explain this code, edit that file, run these tests — and it does them using whatever AI model you choose.
+Cluadex is an AI coding assistant you run in your terminal. Give it tasks — explain this code, edit that file, run these tests — and it does them using whatever AI model you choose.
 
 Supported providers (all free options available):
 
@@ -30,23 +30,23 @@ You need:
 
 ---
 
-## Step 1 — Install Claudex
+## Step 1 — Install Cluadex
 
 ```bash
-npm install -g @letchu_pkt/claudex
+npm install -g @john2026/cluadex
 ```
 
 Verify:
 
 ```bash
-claudex --version
+cluadex --version
 ```
 
 ---
 
 ## Step 2 — First Run
 
-Run `claudex` with no arguments. If no provider is configured, it will show a setup prompt. You can run `/provider` inside the CLI to configure one interactively, or set env vars manually (see below).
+Run `cluadex` with no arguments. If no provider is configured, it will show a setup prompt. You can run `/provider` inside the CLI to configure one interactively, or set env vars manually (see below).
 
 ---
 
@@ -61,7 +61,7 @@ Get a free key at [build.nvidia.com](https://build.nvidia.com/).
 $env:CLAUDE_CODE_USE_NVIDIA="1"
 $env:NVIDIA_API_KEY="nvapi-your-key-here"
 $env:NVIDIA_MODEL="moonshotai/kimi-k2-instruct"
-claudex
+cluadex
 ```
 
 **Mac / Linux:**
@@ -69,7 +69,7 @@ claudex
 export CLAUDE_CODE_USE_NVIDIA=1
 export NVIDIA_API_KEY=nvapi-your-key-here
 export NVIDIA_MODEL=moonshotai/kimi-k2-instruct
-claudex
+cluadex
 ```
 
 ---
@@ -83,7 +83,7 @@ Get a free key at [aistudio.google.com/apikey](https://aistudio.google.com/apike
 $env:CLAUDE_CODE_USE_GEMINI="1"
 $env:GEMINI_API_KEY="your-key-here"
 $env:GEMINI_MODEL="gemini-2.0-flash"
-claudex
+cluadex
 ```
 
 **Mac / Linux:**
@@ -91,7 +91,7 @@ claudex
 export CLAUDE_CODE_USE_GEMINI=1
 export GEMINI_API_KEY=your-key-here
 export GEMINI_MODEL=gemini-2.0-flash
-claudex
+cluadex
 ```
 
 ---
@@ -105,7 +105,7 @@ Get a key at [platform.openai.com/api-keys](https://platform.openai.com/api-keys
 $env:CLAUDE_CODE_USE_OPENAI="1"
 $env:OPENAI_API_KEY="sk-your-key-here"
 $env:OPENAI_MODEL="gpt-4o"
-claudex
+cluadex
 ```
 
 **Mac / Linux:**
@@ -113,7 +113,7 @@ claudex
 export CLAUDE_CODE_USE_OPENAI=1
 export OPENAI_API_KEY=sk-your-key-here
 export OPENAI_MODEL=gpt-4o
-claudex
+cluadex
 ```
 
 ---
@@ -131,7 +131,7 @@ ollama pull llama3.1:8b
 $env:CLAUDE_CODE_USE_OPENAI="1"
 $env:OPENAI_BASE_URL="http://localhost:11434/v1"
 $env:OPENAI_MODEL="llama3.1:8b"
-claudex
+cluadex
 ```
 
 **Mac / Linux:**
@@ -139,20 +139,20 @@ claudex
 export CLAUDE_CODE_USE_OPENAI=1
 export OPENAI_BASE_URL=http://localhost:11434/v1
 export OPENAI_MODEL=llama3.1:8b
-claudex
+cluadex
 ```
 
 ---
 
 ## What Success Looks Like
 
-After running `claudex`, you'll see the Claudex banner with your provider info, then a prompt. Type your first task and press Enter.
+After running `cluadex`, you'll see the Cluadex banner with your provider info, then a prompt. Type your first task and press Enter.
 
 ---
 
 ## Common Problems
 
-### `claudex` command not found
+### `cluadex` command not found
 
 Your terminal hasn't picked up the new PATH yet. Close it, open a new one, try again.
 
@@ -166,7 +166,7 @@ Ollama isn't running. Open a separate terminal and run `ollama serve`, then try 
 
 ### Login screen appears asking for Anthropic
 
-You haven't set a provider env var. Set `CLAUDE_CODE_USE_NVIDIA=1` (or another `CLAUDE_CODE_USE_*` flag) before running `claudex`. Or run `/provider` inside the CLI to set one up interactively.
+You haven't set a provider env var. Set `CLAUDE_CODE_USE_NVIDIA=1` (or another `CLAUDE_CODE_USE_*` flag) before running `cluadex`. Or run `/provider` inside the CLI to set one up interactively.
 
 ---
 
@@ -174,4 +174,4 @@ You haven't set a provider env var. Set `CLAUDE_CODE_USE_NVIDIA=1` (or another `
 
 - Save provider profiles so you don't retype env vars: [Advanced Setup](advanced-setup.md)
 - Platform-specific steps: [Windows](quick-start-windows.md) · [macOS/Linux](quick-start-mac-linux.md)
-- Use Claudex via Telegram: [Telegram Gateway](../telegram-gateway/README.md)
+- Use Cluadex via Telegram: [Telegram Gateway](../telegram-gateway/README.md)
