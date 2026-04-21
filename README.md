@@ -1,6 +1,6 @@
 # cluadex
 
-<img width="1700" height="460" alt="github-header-banner (3)" src="https://github.com/user-attachments/assets/33a60056-a756-4030-8737-14076d69c3d4" />
+<img width="1700" height="460" alt="github-header-banner (3)" src="./images/cluadex1.png" />
 
 
 cluadex is a fork of the Claude Code source that adds a full OpenAI-compatible provider shim, NVIDIA AI (NIM) support, a smart multi-provider router, a Telegram gateway, and local inference via Ollama and Atomic Chat. Every Claude Code tool works — bash, file ops, grep, glob, agents, MCP, tasks — powered by whatever model you choose.
