@@ -1,6 +1,6 @@
 {
   "name": "@john2026/cluadex",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "publisher": "john2026",
   "description": "Claude Code opened to any LLM — OpenAI, Gemini, DeepSeek, Ollama, and 200+ models",
   "type": "module",
