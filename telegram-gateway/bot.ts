@@ -21,6 +21,11 @@ import { spawn, type ChildProcess } from 'node:child_process'
 import { resolve } from 'node:path'
 import { loadConfig, type TelegramConfig } from './config.js'
 
+const TELEGRAM_MESSAGE_MAX_LENGTH = 4000
+const STREAM_FLUSH_DELAY_MS = 1500
+const POLL_TIMEOUT_SECONDS = 30
+const POLL_ABORT_TIMEOUT_MS = 90_000
+
 // ── Load config ───────────────────────────────────────────────────────────────
 
 const cfg: TelegramConfig | null = loadConfig()
@@ -34,8 +39,19 @@ if (!BOT_TOKEN) {
 }
 
 // Allowed IDs: config file + env var override (comma-separated)
-const allowedFromEnv = (process.env.TELEGRAM_ALLOWED_IDS || '')
-  .split(',').map(s => parseInt(s.trim(), 10)).filter(n => !isNaN(n))
+function parseAllowedIds(input: string): number[] {
+  if (!input.trim()) return []
+  return input.split(',').map(s => {
+    const trimmed = s.trim()
+    const parsed = parseInt(trimmed, 10)
+    if (isNaN(parsed) || String(parsed) !== trimmed) {
+      console.warn(`[config] Invalid Telegram ID skipped: "${trimmed}"`)
+      return NaN
+    }
+    return parsed
+  }).filter(n => !isNaN(n))
+}
+const allowedFromEnv = parseAllowedIds(process.env.TELEGRAM_ALLOWED_IDS || '')
 const ALLOWED_IDS = new Set<number>([...(cfg?.allowedIds ?? []), ...allowedFromEnv])
 
 const IDLE_TIMEOUT_MS = parseInt(process.env.IDLE_TIMEOUT_MS || String(cfg?.idleTimeoutMs ?? 300_000), 10)
@@ -93,7 +109,7 @@ async function typing(chatId: number): Promise<void> {
   await tg('sendChatAction', { chat_id: chatId, action: 'typing' }).catch(() => {})
 }
 
-function splitMsg(text: string, max = 4000): string[] {
+function splitMsg(text: string, max = TELEGRAM_MESSAGE_MAX_LENGTH): string[] {
   if (text.length <= max) return [text]
   const out: string[] = []
   for (let i = 0; i < text.length; i += max) out.push(text.slice(i, i + max))
@@ -102,26 +118,59 @@ function splitMsg(text: string, max = 4000): string[] {
 
 // ── Provider env ──────────────────────────────────────────────────────────────
 
+const SAFE_ENV_VARS = new Set([
+  'CI', 'TERM', 'HOME', 'USER', 'PATH', 'LD_LIBRARY_PATH',
+  'SHELL', 'PAGER', 'EDITOR', 'VISUAL', 'LS_COLORS',
+  'LANG', 'LC_ALL', 'XDG_CONFIG_HOME', 'XDG_DATA_HOME',
+])
+
 function buildEnv(): NodeJS.ProcessEnv {
-  const env: NodeJS.ProcessEnv = { ...process.env, CI: '1', TERM: 'dumb' }
-  if (PROVIDER === 'nvidia' && (env.NVIDIA_API_KEY || cfg)) {
+  const env: NodeJS.ProcessEnv = { CI: '1', TERM: 'dumb' }
+  for (const key of SAFE_ENV_VARS) {
+    if (process.env[key]) env[key] = process.env[key]
+  }
+  env.CLAUDE_CODE_USE_OPENAI = '1'
+  if (PROVIDER === 'nvidia') {
     env.CLAUDE_CODE_USE_NVIDIA = '1'
-    env.NVIDIA_API_KEY ??= process.env.NVIDIA_API_KEY
-    env.NVIDIA_MODEL   ??= process.env.NVIDIA_MODEL ?? 'moonshotai/kimi-k2-instruct'
-  } else if (PROVIDER === 'gemini' && env.GEMINI_API_KEY) {
+    env.NVIDIA_API_KEY = process.env.NVIDIA_API_KEY ?? ''
+    env.NVIDIA_MODEL = process.env.NVIDIA_MODEL ?? 'moonshotai/kimi-k2-instruct'
+  } else if (PROVIDER === 'gemini' && process.env.GEMINI_API_KEY) {
     env.CLAUDE_CODE_USE_GEMINI = '1'
+    env.GEMINI_API_KEY = process.env.GEMINI_API_KEY
   } else if (PROVIDER === 'ollama') {
     env.CLAUDE_CODE_USE_OPENAI = '1'
-    env.OPENAI_BASE_URL ??= 'http://localhost:11434/v1'
-    env.OPENAI_MODEL    ??= 'llama3.1:8b'
+    env.OPENAI_BASE_URL = process.env.OPENAI_BASE_URL ?? 'http://localhost:11434/v1'
+    env.OPENAI_MODEL = process.env.OPENAI_MODEL ?? 'llama3.1:8b'
+  } else if (PROVIDER === 'anthropic' && process.env.ANTHROPIC_API_KEY) {
+    env.ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY
+  } else if (PROVIDER === 'bedrock') {
+    env.CLAUDE_CODE_USE_BEDROCK = '1'
+    env.AWS_REGION = process.env.AWS_REGION ?? process.env.AWS_DEFAULT_REGION ?? 'us-east-1'
+    if (process.env.AWS_ACCESS_KEY_ID) env.AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID
+    if (process.env.AWS_SECRET_ACCESS_KEY) env.AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY
+    if (process.env.AWS_SESSION_TOKEN) env.AWS_SESSION_TOKEN = process.env.AWS_SESSION_TOKEN
+  } else if (PROVIDER === 'vertex' && process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+    env.CLAUDE_CODE_USE_VERTEX = '1'
+    env.GOOGLE_APPLICATION_CREDENTIALS = process.env.GOOGLE_APPLICATION_CREDENTIALS
+env.GCP_PROJECT = process.env.GCP_PROJECT ?? process.env.ANTHROPIC_VERTEX_PROJECT_ID ?? ''
+  } else {
+    env.ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY ?? ''
   }
-  // Otherwise inherit whatever CLAUDE_CODE_USE_* is already in env
+  if (process.env.CLAUDE_CODE_CONTAINER_ID) env.CLAUDE_CODE_CONTAINER_ID = process.env.CLAUDE_CODE_CONTAINER_ID
+  if (process.env.CLAUDE_CODE_REMOTE_SESSION_ID) env.CLAUDE_CODE_REMOTE_SESSION_ID = process.env.CLAUDE_CODE_REMOTE_SESSION_ID
   return env
 }
 
 // ── Session management ────────────────────────────────────────────────────────
 
 const sessions = new Map<number, Session>()
+let sessionCreationLock = false
+
+async function waitForSessionSlot(): Promise<void> {
+  while (sessionCreationLock) {
+    await new Promise(r => setTimeout(r, 50))
+  }
+}
 
 function resetIdle(s: Session): void {
   clearTimeout(s.idleTimer)
@@ -138,10 +187,14 @@ function kill(userId: number, reason: string): void {
   console.log(`[session] killed user=${userId} reason=${reason}`)
 }
 
-function createSession(userId: number, chatId: number): Session {
+async function createSession(userId: number, chatId: number): Promise<Session> {
+  await waitForSessionSlot()
   if (sessions.size >= MAX_SESSIONS) {
-    const oldest = [...sessions.values()].sort((a, b) => a.lastActivity - b.lastActivity)[0]
-    if (oldest) kill(oldest.userId, 'max-sessions')
+    const sessionsCopy = [...sessions.values()]
+    const oldest = sessionsCopy.sort((a, b) => a.lastActivity - b.lastActivity)[0]
+    if (oldest) {
+      kill(oldest.userId, 'max-sessions')
+    }
   }
 
   const child = spawn(CLAUDEX_BIN, [...CLAUDEX_ARGS, '--print', '--output-format', 'stream-json', '--verbose'], {
@@ -158,6 +211,10 @@ function createSession(userId: number, chatId: number): Session {
 
   child.stdout?.on('data', (chunk: Buffer) => {
     s.buffer += chunk.toString()
+    if (s.buffer.length > 1_000_000) {
+      s.buffer = s.buffer.slice(-500_000)
+      console.warn(`[session] buffer truncated for user=${userId}`)
+    }
     drainBuffer(s)
   })
 
@@ -184,7 +241,11 @@ function drainBuffer(s: Session): void {
   s.buffer = lines.pop() ?? ''
   for (const line of lines) {
     if (!line.trim()) continue
-    try { handleLine(s, JSON.parse(line) as Record<string, unknown>) } catch {}
+    try {
+      handleLine(s, JSON.parse(line) as Record<string, unknown>)
+    } catch (err) {
+      console.error(`[session] JSON parse error for user=${s.userId}:`, err instanceof Error ? err.message : String(err))
+    }
   }
 }
 
@@ -207,7 +268,7 @@ function accumulate(s: Session, text: string): void {
     s.streamTimer = setTimeout(() => {
       s.streamTimer = undefined
       if (s.streamBuffer.trim()) { void send(s.chatId, s.streamBuffer); s.streamBuffer = '' }
-    }, 1500)
+    }, STREAM_FLUSH_DELAY_MS)
   }
 }
 
@@ -292,9 +353,15 @@ async function handleMessage(msg: TelegramMessage): Promise<void> {
 
   let s = sessions.get(userId)
   if (!s) {
-    s = createSession(userId, chatId)
+    s = await createSession(userId, chatId)
     await send(chatId, '🚀 Starting Claudex…')
     await new Promise(r => setTimeout(r, 1500))
+    s = sessions.get(userId) ?? s
+  }
+
+  if (!s) {
+    await send(chatId, '⚠️ Failed to create session — please try again.')
+    return
   }
 
   s.lastActivity = Date.now()
@@ -323,7 +390,8 @@ let offset = 0
 async function poll(): Promise<void> {
   try {
     const res = await fetch(
-      `${TELEGRAM_API}/getUpdates?timeout=30&offset=${offset}&allowed_updates=["message"]`,
+      `${TELEGRAM_API}/getUpdates?timeout=${POLL_TIMEOUT_SECONDS}&offset=${offset}&allowed_updates=["message"]`,
+      { signal: AbortSignal.timeout(POLL_ABORT_TIMEOUT_MS) }
     )
     const data = (await res.json()) as { ok: boolean; result: TelegramUpdate[] }
     if (!data.ok || !data.result) return
@@ -332,7 +400,11 @@ async function poll(): Promise<void> {
       if (update.message) handleMessage(update.message).catch(console.error)
     }
   } catch (err) {
-    console.error('[poll]', err)
+    if (err instanceof Error && err.name === 'TimeoutError') {
+      console.warn('[poll] timeout, retrying...')
+    } else {
+      console.error('[poll]', err)
+    }
     await new Promise(r => setTimeout(r, 5000))
   }
 }

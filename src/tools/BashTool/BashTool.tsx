@@ -25,7 +25,7 @@ import { fileHistoryEnabled, fileHistoryTrackEdit } from '../../utils/fileHistor
 import { truncate } from '../../utils/format.js';
 import { getFsImplementation } from '../../utils/fsOperations.js';
 import { lazySchema } from '../../utils/lazySchema.js';
-import { expandPath } from '../../utils/path.js';
+import { containsPathTraversal, expandPath } from '../../utils/path.js';
 import type { PermissionResult } from '../../utils/permissions/PermissionResult.js';
 import { maybeRecordPluginHint } from '../../utils/plugins/hintRecommendation.js';
 import { exec } from '../../utils/Shell.js';
@@ -365,6 +365,17 @@ async function applySedEdit(simulatedEdit: {
     filePath,
     newContent
   } = simulatedEdit;
+
+  if (containsPathTraversal(filePath)) {
+    return {
+      data: {
+        stdout: '',
+        stderr: `sed: ${filePath}: Path traversal not allowed\nExit code 1`,
+        interrupted: false
+      }
+    };
+  }
+
   const absoluteFilePath = expandPath(filePath);
   const fs = getFsImplementation();
 

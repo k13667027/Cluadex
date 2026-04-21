@@ -28,10 +28,7 @@ import {
   isEnvTruthy,
 } from '../../utils/envUtils.js'
 
-const importRuntimeModule = new Function(
-  'specifier',
-  'return import(specifier)',
-) as (specifier: string) => Promise<any>
+const importRuntimeModule = (specifier: string) => import(specifier)
 
 /**
  * Environment variables for different client types:

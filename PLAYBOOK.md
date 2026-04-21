@@ -11,7 +11,7 @@ Practical guide for running cluadex day-to-day — local models, cloud providers
 - Smart multi-provider router (`ROUTER_MODE=smart`)
 - Runtime diagnostics (`doctor:runtime`, `doctor:report`)
 - Telegram gateway (`cluadex telegram`)
-- Startup themes (`CLAUDEX_THEME`)
+- Startup themes (`CLUADEX_THEME`)
 - Providers: NVIDIA AI, Gemini, OpenAI, Ollama, Atomic Chat, Codex, DeepSeek, Groq, and more
 
 ---
@@ -185,7 +185,7 @@ Full guide: [telegram-gateway/README.md](telegram-gateway/README.md)
 ## 8. Startup Themes
 
 ```powershell
-$env:CLAUDEX_THEME="ocean"   # sunset | ocean | aurora | neon | mono
+$env:CLUADEX_THEME="ocean"   # sunset | ocean | aurora | neon | mono
 cluadex
 ```
 

@@ -19,7 +19,7 @@ npm install -g @john2026/cluadex
 cluadex
 ```
 
-On first run, if no provider is configured, Claudex will prompt you to set one up via `/provider`. No Anthropic account required.
+On first run, if no provider is configured, Cluadex will prompt you to set one up via `/provider`. No Anthropic account required.
 
 ---
 
@@ -119,7 +119,7 @@ Any OpenAI-compatible endpoint works: DeepSeek, Groq, Mistral, Together AI, Open
 
 ## Startup Themes
 
-Set `CLAUDEX_THEME` to change the banner color scheme:
+Set `CLUADEX_THEME` to change the banner color scheme:
 
 | Theme | Colors |
 |---|---|
@@ -130,7 +130,7 @@ Set `CLAUDEX_THEME` to change the banner color scheme:
 | `mono` | white → grey |
 
 ```bash
-export CLAUDEX_THEME=ocean
+export CLUADEX_THEME=ocean
 cluadex
 ```
 
@@ -174,7 +174,7 @@ cluadex
 
 ## Telegram Gateway
 
-Use Claudex through a Telegram bot. Each user gets an isolated session.
+Use CLUADEX through a Telegram bot. Each user gets an isolated session.
 
 ```bash
 # configure (one time)
@@ -269,7 +269,7 @@ Claude Code Tool System
 
 ## VS Code Extension
 
-Install the bundled extension from `vscode-extension/openclaude-vscode` for one-click terminal launch and the `Claudex Terminal Black` theme.
+Install the bundled extension from `vscode-extension/openclaude-vscode` for one-click terminal launch and the `Cluadex Terminal Black` theme.
 
 ---
 

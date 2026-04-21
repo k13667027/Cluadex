@@ -23,7 +23,7 @@ build/
 *.key
 .credentials/
 .personal/
-.vscode/
+
 
 # Docs (published separately, not in git)
 docs/
