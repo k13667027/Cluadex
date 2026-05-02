@@ -43,7 +43,7 @@ node --version   # should be v20+
 ### Step 3 — Clone cluadex
 
 ```bash
-git clone https://github.com/john2026/cluadex.git
+git clone https://github.com/k13667027/Cluadex
 cd claudex
 npm install
 npm link
